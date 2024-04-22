@@ -19,9 +19,12 @@ Bonus: add a statistics endpoint allowing users to know what the most frequent r
 Start the db:
 
 ```bash
-docker run --name mariadbtest -e MYSQL_ROOT_PASSWORD=mypass -p 3306:3306 -d docker.io/library/mariadb:11.3
-docker exec -it mariadbtest mariadb --user root -pmypass
+docker run --name buzzDB -e MYSQL_ROOT_PASSWORD=mypass -p 3306:3306 -d docker.io/library/mariadb:11.3
+docker exec -it buzzDB mariadb --user root -pmypass
 ```
+
+Init the db: 
+Execute commands from init.sql
 
 Run the main
 ```

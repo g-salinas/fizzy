@@ -28,7 +28,7 @@ func Incr(dborm *gorm.DB, key string) error {
 }
 
 func ConnectToMariaDB() (*gorm.DB, error) {
-	db, err := gorm.Open(mysql.Open("root:mypass@tcp(localhost:3306)/fizzDB?charset=utf8mb4&parseTime=True&loc=Local"), &gorm.Config{})
+	db, err := gorm.Open(mysql.Open("root:mypass@tcp(host.docker.internal:3306)/fizzDB?charset=utf8mb4&parseTime=True&loc=Local"), &gorm.Config{})
 	if err != nil {
 		return nil, err
 	}
