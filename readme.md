@@ -23,6 +23,9 @@ docker run --name buzzDB -e MYSQL_ROOT_PASSWORD=mypass -p 3306:3306 -d docker.io
 docker exec -it buzzDB mariadb --user root -pmypass
 ```
 
+Init the db: 
+Execute commands from init.sql
+
 Run the main
 ```
 go run src/main.go
