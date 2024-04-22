@@ -2,13 +2,26 @@ package main
 
 import (
 	"errors"
+	"fmt"
+	"lbc/fizzy/src/db"
+	"log"
 	"net/http"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+
+	"gorm.io/gorm"
 )
 
+var client *gorm.DB
+
 func main() {
+	var err error
+	client, err = db.ConnectToMariaDB()
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	r := gin.Default()
 
 	// Routes defined in the routes package
@@ -33,6 +46,11 @@ func replace(c *gin.Context) {
 	message, err := buildMessage(input)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+	}
+
+	err = db.Incr(client, input.String())
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
 	}
 
 	c.JSON(200, gin.H{
@@ -66,12 +84,20 @@ func buildMessage(input Input) (string, error) {
 		message = message[:len(message)-1]
 	}
 	return message, nil
+
 }
 
 func stats(c *gin.Context) {
+
+	val, err := db.GetMaxQuery(client)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err})
+	}
+
 	c.JSON(200, gin.H{
-		"message": "Welcome to the API!",
+		val.Id: val.Queries,
 	})
+
 }
 
 type Input struct {
@@ -80,4 +106,9 @@ type Input struct {
 	Limit int
 	Str1  string
 	Str2  string
+}
+
+func (i *Input) String() string {
+	s := fmt.Sprintf("Int1: %d, Int2: %d, Limit: %d, Str1: %s, Str2 %s", i.Int1, i.Int2, i.Limit, i.Str1, i.Str2)
+	return s
 }

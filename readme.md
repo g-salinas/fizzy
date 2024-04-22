@@ -15,3 +15,18 @@ Bonus: add a statistics endpoint allowing users to know what the most frequent r
 - Return the parameters corresponding to the most used request, as well as the number of hits for this request
 
 ## How to run it
+
+Start the db:
+
+```bash
+docker run --name mariadbtest -e MYSQL_ROOT_PASSWORD=mypass -p 3306:3306 -d docker.io/library/mariadb:11.3
+docker exec -it mariadbtest mariadb --user root -pmypass
+```
+
+Run the main
+```
+go run src/main.go
+```
+
+You can try the example requests on test.http file or create new ones 
+

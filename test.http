@@ -1,0 +1,35 @@
+POST /fizzybuzzy HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
+Content-Length: 90
+
+{
+    "Int1": 2,
+    "Int2": 3,
+    "Limit": 6,
+    "Str1": "a",
+    "Str2": "b"
+
+}
+
+###
+
+POST /fizzybuzzy HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
+Content-Length: 90
+
+{
+    "Int1": 2,
+    "Int2": 3,
+    "Limit": 45,
+    "Str1": "a",
+    "Str2": "b"
+
+}
+
+###
+
+GET /fizzybuzzy/stats HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
