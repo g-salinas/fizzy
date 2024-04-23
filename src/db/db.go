@@ -1,12 +1,15 @@
 package db
 
 import (
+	"fmt"
+	"os"
+
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
 type Stat struct {
-	Id      string
+	Id      string `gorm:"primaryKey"`
 	Queries int
 }
 
@@ -28,7 +31,19 @@ func Incr(dborm *gorm.DB, key string) error {
 }
 
 func ConnectToMariaDB() (*gorm.DB, error) {
-	db, err := gorm.Open(mysql.Open("root:mypass@tcp(host.docker.internal:3306)/fizzDB?charset=utf8mb4&parseTime=True&loc=Local"), &gorm.Config{})
+	bin, err := os.ReadFile("/run/secrets/db-password")
+	if err != nil {
+		return nil, err
+	}
+
+	sqlDB := mysql.Open(fmt.Sprintf("root:%s@tcp(db:3306)/buzzDB", string(bin)))
+
+	db, err := gorm.Open(sqlDB, &gorm.Config{})
+	if err != nil {
+		return nil, err
+	}
+
+	err = db.AutoMigrate(&Stat{})
 	if err != nil {
 		return nil, err
 	}

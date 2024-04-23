@@ -27,7 +27,6 @@ func main() {
 	// Routes defined in the routes package
 	routes := r.Group("/fizzybuzzy")
 	{
-		routes.GET("/", replace)
 		routes.POST("/", replace)
 		routes.GET("/stats", stats)
 	}
